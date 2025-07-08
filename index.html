@@ -50,6 +50,18 @@
             border: 4px solid #1F2937;
             /* bg-gray-800 */
         }
+
+        /* Animation Styles */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -98,7 +110,7 @@
         </section>
 
         <!-- About Me Section -->
-        <section id="about" class="py-20">
+        <section id="about" class="py-20 fade-in-section">
             <h2 class="text-3xl font-bold text-white text-center mb-12">About Me</h2>
             <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
                 <div class="w-full md:w-2/3">
@@ -119,15 +131,14 @@
                     </p>
                 </div>
                 <div class="w-full md:w-1/3 flex justify-center">
-                    <!-- In the "About Me" section -->
-                    <img src="images/profile.png" alt="Ahmad Azhari"
+                    <img src="images/profile.jpg" alt="Ahmad Azhari"
                         class="rounded-full w-48 h-48 md:w-64 md:h-64 object-cover border-4 border-blue-500 shadow-lg">
                 </div>
             </div>
         </section>
 
         <!-- Experience Section -->
-        <section id="experience" class="py-20">
+        <section id="experience" class="py-20 fade-in-section">
             <h2 class="text-3xl font-bold text-white text-center mb-12">My Experience</h2>
             <div class="max-w-3xl mx-auto relative border-l-2 border-gray-700 pl-10">
                 <!-- PT. Mastersystem Infotama -->
@@ -136,7 +147,6 @@
                     <p class="font-semibold text-white">PT. Mastersystem Infotama</p>
                     <p class="text-sm text-gray-400 mb-2">June 2025 - Present</p>
                     <ul class="list-disc list-inside text-gray-300 space-y-1">
-                        <!-- Please edit these descriptions to match your role -->
                         <li>Design, implement, and manage cloud-based infrastructure and services.</li>
                         <li>Automate deployment and management processes using CI/CD pipelines.</li>
                         <li>Monitor system performance and ensure reliability and security of the cloud environment.
@@ -184,14 +194,20 @@
         </section>
 
         <!-- Projects Section -->
-        <section id="projects" class="py-20">
+        <section id="projects" class="py-20 fade-in-section">
             <h2 class="text-3xl font-bold text-white text-center mb-12">Featured Projects</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1: FoodParadise -->
                 <div
                     class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">FoodParadise</h3>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white">FoodParadise</h3>
+                            <a href="https://github.com/zaribae/FoodParadise" target="_blank" rel="noopener noreferrer"
+                                class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
                         <p class="text-sm text-gray-400 mb-4">A robust restaurant food ordering website built with
                             Laravel. Features include real-time chat, secure PayPal payments, reservations, and more.
                         </p>
@@ -206,7 +222,13 @@
                 <div
                     class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">Clothize App</h3>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white">Clothize App</h3>
+                            <a href="https://github.com/zaribae/Clothize-App" target="_blank" rel="noopener noreferrer"
+                                class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
                         <p class="text-sm text-gray-400 mb-4">A platform for local tailoring and automatic clothes size
                             measurement. I built the RESTful API using Express and deployed it on Google Cloud Run.</p>
                         <div class="flex flex-wrap">
@@ -220,7 +242,13 @@
                 <div
                     class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-2">SRIFOTON 2023 Website</h3>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-bold text-white">SRIFOTON 2023 Website</h3>
+                            <a href="https://github.com/zaribae/SRIFOTON-2023" target="_blank" rel="noopener noreferrer"
+                                class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
                         <p class="text-sm text-gray-400 mb-4">Developed the backend RESTful API for a national tech
                             competition website, handling registrations and event information using Laravel.</p>
                         <div class="flex flex-wrap">
@@ -234,7 +262,7 @@
         </section>
 
         <!-- Skills Section -->
-        <section id="skills" class="py-20 bg-gray-800/50 rounded-lg">
+        <section id="skills" class="py-20 bg-gray-800/50 rounded-lg fade-in-section">
             <h2 class="text-3xl font-bold text-white text-center mb-12">Technical Skills</h2>
             <div class="max-w-4xl mx-auto text-center">
                 <span class="skill-badge">JavaScript</span>
@@ -259,7 +287,7 @@
         </section>
 
         <!-- Education Section -->
-        <section id="education" class="py-20">
+        <section id="education" class="py-20 fade-in-section">
             <h2 class="text-3xl font-bold text-white text-center mb-12">Education</h2>
             <div class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg text-center">
                 <h3 class="text-2xl font-bold text-blue-400">Sriwijaya University</h3>
@@ -271,7 +299,7 @@
 
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20 text-center">
+        <section id="contact" class="py-20 text-center fade-in-section">
             <h2 class="text-3xl font-bold text-white mb-4">Get In Touch</h2>
             <p class="max-w-2xl mx-auto mb-8">I'm currently looking for new opportunities and would love to hear from
                 you. Whether you have a question or just want to say hi, feel free to reach out!</p>
@@ -286,7 +314,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 py-6">
         <div class="container mx-auto px-6 text-center text-gray-400">
-            <p>&copy; 2025 Ahmad Azhari. All Rights Reserved.</p>
+            <p>&copy; 2024 Ahmad Azhari. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -306,6 +334,28 @@
                 mobileMenu.classList.add('hidden');
             });
         }
+
+        // JavaScript for scroll animations
+        const sections = document.querySelectorAll('.fade-in-section');
+
+        const observerOptions = {
+            root: null, // relative to the viewport
+            rootMargin: '0px',
+            threshold: 0.1 // 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Stop observing once it's visible
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
     </script>
 
 </body>
