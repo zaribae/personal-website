@@ -12,8 +12,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -63,6 +65,47 @@
         .fade-in-section.is-visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Swiper Styles */
+        .swiper-container {
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .swiper-slide {
+            height: auto;
+            /* Make slides flexible */
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            /* Make slides same height */
+        }
+
+        .project-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #ffffff;
+            background-color: rgba(31, 41, 55, 0.5);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #3B82F6;
         }
     </style>
 </head>
@@ -203,71 +246,17 @@
         <!-- Projects Section -->
         <section id="projects" class="py-20 fade-in-section">
             <h2 class="text-3xl font-bold text-white text-center mb-12">Featured Projects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Project 1: FoodParadise -->
-                <div
-                    class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white">FoodParadise</h3>
-                            <a href="https://github.com/zaribae/food-paradise-laravel-project.git" target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
-                                <i class="fab fa-github"></i>
-                            </a>
-                        </div>
-                        <p class="text-sm text-gray-400 mb-4">A robust restaurant food ordering website built with
-                            Laravel. Features include real-time chat, secure PayPal payments, reservations, and more.
-                        </p>
-                        <div class="flex flex-wrap">
-                            <span class="skill-badge bg-red-600/50">Laravel</span>
-                            <span class="skill-badge bg-blue-600/50">MySQL</span>
-                            <span class="skill-badge bg-green-600/50">Real-time Chat</span>
-                        </div>
-                    </div>
+            <!-- Slider main container -->
+            <div class="swiper-container relative max-w-6xl mx-auto">
+                <!-- Additional required wrapper -->
+                <div id="projects-container" class="swiper-wrapper">
+                    <!-- Slides will be inserted here by JavaScript -->
                 </div>
-                <!-- Project 2: Clothize App -->
-                <div
-                    class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white">Clothize App</h3>
-                            <a href="https://github.com/zaribae/Clothize-CC.git" target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
-                                <i class="fab fa-github"></i>
-                            </a>
-                        </div>
-                        <p class="text-sm text-gray-400 mb-4">A platform for local tailoring and automatic clothes size
-                            measurement. I built the RESTful API using Express and deployed it on Google Cloud Run.</p>
-                        <div class="flex flex-wrap">
-                            <span class="skill-badge bg-gray-600/50">Express.js</span>
-                            <span class="skill-badge bg-yellow-600/50">Google Cloud</span>
-                            <span class="skill-badge bg-purple-600/50">REST API</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Project 3: SRIFOTON 2023 -->
-                <div
-                    class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold text-white">SRIFOTON 2023 Website</h3>
-                            <a href="https://github.com/HMIF-UNSRI/srifoton2023-be.git" target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
-                                <i class="fab fa-github"></i>
-                            </a>
-                        </div>
-                        <p class="text-sm text-gray-400 mb-4">Developed the backend RESTful API for a national tech
-                            competition website, handling registrations and event information using Laravel.</p>
-                        <div class="flex flex-wrap">
-                            <span class="skill-badge bg-red-600/50">Laravel</span>
-                            <span class="skill-badge bg-purple-600/50">REST API</span>
-                            <span class="skill-badge bg-blue-600/50">Team Project</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
         </section>
 
@@ -328,8 +317,124 @@
         </div>
     </footer>
 
+    <!-- Swiper.js JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        // JavaScript for mobile menu toggle
+        // --- DYNAMIC PROJECTS SCRIPT ---
+
+        // To add a new project, just add a new object to this array.
+        const projects = [
+            {
+                title: 'AI Customer Service ChatBot',
+                githubLink: 'https://github.com/zaribae/aws-ai-customer-chatbot.git',
+                description: 'This project is a serverless, AI-powered customer service chatbot built on Amazon Web Services (AWS). It provides a simple web interface for customers to ask questions and receive intelligent, context-aware responses generated by Amazon Bedrock.',
+                tags: ['Lambda', 'API Gateway', 'Amazon Bedrock', 'DynamoDB']
+            },
+            {
+                title: 'FoodParadise',
+                githubLink: 'https://github.com/zaribae/FoodParadise',
+                description: 'A robust restaurant food ordering website built with Laravel. Features include real-time chat, secure PayPal payments, reservations, and more.',
+                tags: ['Laravel', 'MySQL', 'Real-time Chat']
+            },
+            {
+                title: 'Clothize App',
+                githubLink: 'https://github.com/zaribae/Clothize-App',
+                description: 'A platform for local tailoring and automatic clothes size measurement. I built the RESTful API using Express and deployed it on Google Cloud Run.',
+                tags: ['Express.js', 'Google Cloud', 'REST API']
+            },
+            {
+                title: 'SRIFOTON 2023 Website',
+                githubLink: 'https://github.com/zaribae/SRIFOTON-2023',
+                description: 'Developed the backend RESTful API for a national tech competition website, handling registrations and event information using Laravel.',
+                tags: ['Laravel', 'REST API', 'Team Project']
+            },
+            // {
+            //     title: 'New Awesome Project',
+            //     githubLink: 'https://github.com/zaribae/new-awesome-project',
+            //     description: 'A description of your new awesome project. It solves a really cool problem and uses cutting-edge technology.',
+            //     tags: ['ReactJS', 'Node.js', 'MongoDB']
+            // }
+        ];
+
+        const projectsContainer = document.getElementById('projects-container');
+
+        // A map to assign colors to specific tags
+        const tagColors = {
+            'Lambda': 'bg-yellow-600/50',
+            'API Gateway': 'bg-brown-600/50',
+            'Amazon Bedrock': 'bg-green-600/50',
+            'DynamoDB': 'bg-blue-600/50',
+            'Laravel': 'bg-red-600/50',
+            'MySQL': 'bg-blue-600/50',
+            'Real-time Chat': 'bg-green-600/50',
+            'Express.js': 'bg-gray-600/50',
+            'Google Cloud': 'bg-yellow-600/50',
+            'REST API': 'bg-purple-600/50',
+            'Team Project': 'bg-indigo-600/50',
+            'ReactJS': 'bg-sky-600/50',
+            'Node.js': 'bg-emerald-600/50',
+            'MongoDB': 'bg-lime-600/50'
+        };
+
+        projects.forEach(project => {
+            const projectSlide = document.createElement('div');
+            projectSlide.className = 'swiper-slide';
+
+            const tagsHtml = project.tags.map(tag => {
+                const colorClass = tagColors[tag] || 'bg-gray-700/50'; // Default color if tag not in map
+                return `<span class="skill-badge ${colorClass}">${tag}</span>`;
+            }).join('');
+
+            projectSlide.innerHTML = `
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 project-card">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                             <h3 class="text-xl font-bold text-white">${project.title}</h3>
+                             <a href="${project.githubLink}" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
+                                <i class="fab fa-github"></i>
+                             </a>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-4 flex-grow">${project.description}</p>
+                        <div class="flex flex-wrap">
+                           ${tagsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+            projectsContainer.appendChild(projectSlide);
+        });
+
+        // --- SWIPER SLIDER SCRIPT ---
+        const swiper = new Swiper('.swiper-container', {
+            loop: projects.length > 3,
+            spaceBetween: 30,
+            breakpoints: {
+                0: {
+                    slidesPerView: 1
+                },
+                768: {
+                    slidesPerView: 2
+                },
+                1024: {
+                    slidesPerView: 3
+                },
+                1440: {
+                    slidesPerView: 3 // Prevent showing 4+ even on large screens
+                }
+            },
+            // Pagination
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // --- MOBILE MENU SCRIPT ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
 
@@ -337,7 +442,6 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Close mobile menu when a link is clicked
         const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
         for (let link of mobileMenuLinks) {
             link.addEventListener('click', () => {
@@ -345,20 +449,20 @@
             });
         }
 
-        // JavaScript for scroll animations
+        // --- SCROLL ANIMATION SCRIPT ---
         const sections = document.querySelectorAll('.fade-in-section');
 
         const observerOptions = {
-            root: null, // relative to the viewport
+            root: null,
             rootMargin: '0px',
-            threshold: 0.1 // 10% of the element is visible
+            threshold: 0.1
         };
 
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target); // Stop observing once it's visible
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
