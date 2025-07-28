@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmad Azhari - Portfolio</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231F2937'></rect><text x='50' y='50' dominant-baseline='central' text-anchor='middle' font-size='50' font-family='Inter, sans-serif' font-weight='bold' fill='%233B82F6'>AA</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .skill-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background-color: #374151;
+            /* bg-gray-700 */
+            color: #F9FAFB;
+            /* text-gray-100 */
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.25rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .skill-badge:hover {
+            background-color: #4B5563;
+            /* bg-gray-600 */
+            transform: translateY(-2px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #3B82F6;
+            /* bg-blue-500 */
+            border: 4px solid #1F2937;
+            /* bg-gray-800 */
+        }
+
+        /* Animation Styles */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Swiper Styles */
+        .swiper-container {
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .swiper-slide {
+            height: auto;
+            /* Make slides flexible */
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            /* Make slides same height */
+        }
+
+        .project-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #ffffff;
+            background-color: rgba(31, 41, 55, 0.5);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #3B82F6;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-300">
+
+    <!-- Header & Navigation -->
+    <header class="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white">Ahmad Azhari</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#about" class="hover:text-blue-400 transition-colors duration-300">About</a>
+                <a href="#experience" class="hover:text-blue-400 transition-colors duration-300">Experience</a>
+                <a href="#projects" class="hover:text-blue-400 transition-colors duration-300">Projects</a>
+                <a href="#skills" class="hover:text-blue-400 transition-colors duration-300">Skills</a>
+                <a href="#contact"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#about" class="block py-2 px-4 text-sm hover:bg-gray-700">About</a>
+            <a href="#experience" class="block py-2 px-4 text-sm hover:bg-gray-700">Experience</a>
+            <a href="#projects" class="block py-2 px-4 text-sm hover:bg-gray-700">Projects</a>
+            <a href="#skills" class="block py-2 px-4 text-sm hover:bg-gray-700">Skills</a>
+            <a href="#contact" class="block py-2 px-4 text-sm hover:bg-gray-700">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Hero Section -->
+        <section id="home" class="text-center py-20">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">Ahmad Azhari</h1>
+            <p class="text-xl md:text-2xl text-blue-400 font-medium mb-8">Cloud Engineer</p>
+            <div class="flex justify-center space-x-6 mb-8 text-3xl">
+                <a href="https://www.linkedin.com/in/ahmad-azhari/" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-blue-400 transition-colors duration-300"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/zaribae" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-white transition-colors duration-300"><i class="fab fa-github"></i></a>
+                <a href="mailto:ahmadazzhari@gmail.com" class="hover:text-red-400 transition-colors duration-300"><i
+                        class="fas fa-envelope"></i></a>
+            </div>
+            <a href="assets/CV Ahmad Azhari.pdf" download="CV-Ahmad-Azhari.pdf"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 text-lg inline-flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                Download CV
+            </a>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="py-20 fade-in-section">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">About Me</h2>
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10">
+                <div class="w-full md:w-2/3">
+                    <p class="mb-4">
+                        I am a passionate Cloud Engineer with a strong foundation in backend development and cloud
+                        computing, recently graduated from Sriwijaya University. My academic journey, culminating in a
+                        3.95 GPA, has provided me with a solid foundation in software engineering principles.
+                    </p>
+                    <p class="mb-4">
+                        Through internships and projects, I've gained hands-on experience in building and deploying
+                        robust web applications. I led the backend development for a capstone project at Bangkit
+                        Academy, utilizing technologies like Express, Prisma, and Google Cloud Platform. I am eager to
+                        apply my skills to solve real-world problems and contribute to innovative tech solutions.
+                    </p>
+                    <p>
+                        Based in Jambi, Indonesia, I am a quick learner, a collaborative team player, and always ready
+                        for a new challenge.
+                    </p>
+                </div>
+                <div class="w-full md:w-1/3 flex justify-center">
+                    <img src="images/profile.png" alt="Ahmad Azhari"
+                        class="rounded-full w-48 h-48 md:w-64 md:h-64 object-cover border-4 border-blue-500 shadow-lg">
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 fade-in-section">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">My Experience</h2>
+            <div class="max-w-3xl mx-auto relative border-l-2 border-gray-700 pl-10">
+                <!-- PT. Mastersystem Infotama -->
+                <div class="mb-12 timeline-item">
+                    <h3 class="text-xl font-bold text-blue-400">Cloud Engineer</h3>
+                    <p class="font-semibold text-white">PT. Mastersystem Infotama</p>
+                    <p class="text-sm text-gray-400 mb-2">July 2025 - Present</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Design, implement, and manage cloud-based infrastructure and services.</li>
+                        <li>Automate deployment and management processes using CI/CD pipelines.</li>
+                        <li>Monitor system performance and ensure reliability and security of the cloud environment.
+                        </li>
+                    </ul>
+                </div>
+                <!-- Altrusights -->
+                <div class="mb-12 timeline-item">
+                    <h3 class="text-xl font-bold text-blue-400">Web Developer Intern</h3>
+                    <p class="font-semibold text-white">Altrusights</p>
+                    <p class="text-sm text-gray-400 mb-2">Feb 2025 - May 2025</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Engineered core features for a warehouse management system using Laravel, jQuery, and MySQL.
+                        </li>
+                        <li>Developed functionalities for stock transfer, purchase orders, delivery orders, and receipt
+                            notes.</li>
+                        <li>Supported backend development and enhanced frontend interactivity with API integrations.
+                        </li>
+                    </ul>
+                </div>
+                <!-- Bangkit Academy -->
+                <div class="mb-12 timeline-item">
+                    <h3 class="text-xl font-bold text-blue-400">Cloud Computing Learning Path</h3>
+                    <p class="font-semibold text-white">Bangkit Academy</p>
+                    <p class="text-sm text-gray-400 mb-2">Aug 2023 - Jan 2024</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Led backend development for a capstone project, building a RESTful API with Express, Prisma,
+                            and JWT.</li>
+                        <li>Deployed applications to Google Cloud Platform, gaining experience with Cloud Run and Cloud
+                            SQL.</li>
+                        <li>Acquired key soft skills in time management, critical thinking, and project management.</li>
+                    </ul>
+                </div>
+                <!-- Lab Assistant -->
+                <div class="timeline-item">
+                    <h3 class="text-xl font-bold text-blue-400">Lab Assistant</h3>
+                    <p class="font-semibold text-white">Sriwijaya University Advanced Programming Laboratory</p>
+                    <p class="text-sm text-gray-400 mb-2">Oct 2023 - Dec 2023</p>
+                    <ul class="list-disc list-inside text-gray-300 space-y-1">
+                        <li>Managed laboratory operations and supervised class sessions.</li>
+                        <li>Conducted a public training session on Network Automation using Python and GNS3.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 fade-in-section">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">Featured Projects</h2>
+            <!-- Slider main container -->
+            <div class="swiper-container relative max-w-6xl mx-auto">
+                <!-- Additional required wrapper -->
+                <div id="projects-container" class="swiper-wrapper">
+                    <!-- Slides will be inserted here by JavaScript -->
+                </div>
+                <!-- Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 bg-gray-800/50 rounded-lg fade-in-section">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">Technical Skills</h2>
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="skill-badge">JavaScript</span>
+                <span class="skill-badge">Express</span>
+                <span class="skill-badge">Hapi</span>
+                <span class="skill-badge">jQuery</span>
+                <span class="skill-badge">PHP</span>
+                <span class="skill-badge">Laravel</span>
+                <span class="skill-badge">ReactJS</span>
+                <span class="skill-badge">Cloud Computing</span>
+                <span class="skill-badge">MySQL</span>
+                <span class="skill-badge">PostgreSQL</span>
+                <span class="skill-badge">MongoDB</span>
+                <span class="skill-badge">REST API</span>
+                <span class="skill-badge">Git</span>
+                <span class="skill-badge">Java</span>
+                <span class="skill-badge">OOP</span>
+                <span class="skill-badge">Spring</span>
+                <span class="skill-badge">Python</span>
+                <span class="skill-badge">Go</span>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-20 fade-in-section">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">Education</h2>
+            <div class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg text-center">
+                <h3 class="text-2xl font-bold text-blue-400">Sriwijaya University</h3>
+                <p class="text-lg text-white mt-2">Faculty of Computer Science - Informatics Engineering</p>
+                <p class="text-gray-400 mt-1">2021 - 2025</p>
+                <p class="text-white font-semibold text-lg mt-4">GPA: 3.95 / 4.00</p>
+            </div>
+        </section>
+
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 text-center fade-in-section">
+            <h2 class="text-3xl font-bold text-white mb-4">Get In Touch</h2>
+            <p class="max-w-2xl mx-auto mb-8">I'm currently looking for new opportunities and would love to hear from
+                you. Whether you have a question or just want to say hi, feel free to reach out!</p>
+            <a href="mailto:ahmadazzhari@gmail.com"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 text-lg">
+                Say Hello
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 py-6">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <p>&copy; 2025 Ahmad Azhari. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Swiper.js JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // --- DYNAMIC PROJECTS SCRIPT ---
+
+        // To add a new project, just add a new object to this array.
+        const projects = [
+            {
+                title: 'SpendWise - AI-Powered Expense Tracker',
+                githubLink: 'https://github.com/zaribae/spendwise-expense-tracker-app.git',
+                description: 'SpendWise is a modern, serverless web application designed to help you track your expenses and income effortlessly. Leveraging the power of AI, you can add transactions using natural language. The application provides insightful daily and monthly financial overviews, with all data securely stored in the cloud.',
+                tags: ['Lambda', 'API Gateway', 'Amazon Cognito', 'DynamoDB', 'Amazon Bedrock']
+            },
+            {
+                title: 'Serverless Image Recognition & Tagging on AWS',
+                githubLink: 'https://github.com/zaribae/serverless-image-recognition-with-aws.git',
+                description: 'This guide will walk you through building an event-driven, serverless application that automatically analyzes and tags images using AWS services. Users will be able to upload images, which will be automatically tagged using AI, and then search for those images based on their tags.',
+                tags: ['Lambda', 'API Gateway', 'S3', 'DynamoDB', 'Amazon Rekognition']
+            },
+            {
+                title: 'AI Customer Service ChatBot',
+                githubLink: 'https://github.com/zaribae/aws-ai-customer-chatbot.git',
+                description: 'This project is a serverless, AI-powered customer service chatbot built on Amazon Web Services (AWS). It provides a simple web interface for customers to ask questions and receive intelligent, context-aware responses generated by Amazon Bedrock.',
+                tags: ['Lambda', 'API Gateway', 'Amazon Bedrock', 'DynamoDB']
+            },
+            {
+                title: 'FoodParadise',
+                githubLink: 'https://github.com/zaribae/FoodParadise',
+                description: 'A robust restaurant food ordering website built with Laravel. Features include real-time chat, secure PayPal payments, reservations, and more.',
+                tags: ['Laravel', 'MySQL', 'Real-time Chat']
+            },
+            {
+                title: 'Clothize App',
+                githubLink: 'https://github.com/zaribae/Clothize-App',
+                description: 'A platform for local tailoring and automatic clothes size measurement. I built the RESTful API using Express and deployed it on Google Cloud Run.',
+                tags: ['Express.js', 'Google Cloud', 'REST API']
+            },
+            {
+                title: 'SRIFOTON 2023 Website',
+                githubLink: 'https://github.com/zaribae/SRIFOTON-2023',
+                description: 'Developed the backend RESTful API for a national tech competition website, handling registrations and event information using Laravel.',
+                tags: ['Laravel', 'REST API', 'Team Project']
+            },
+            // {
+            //     title: 'New Awesome Project',
+            //     githubLink: 'https://github.com/zaribae/new-awesome-project',
+            //     description: 'A description of your new awesome project. It solves a really cool problem and uses cutting-edge technology.',
+            //     tags: ['ReactJS', 'Node.js', 'MongoDB']
+            // }
+        ];
+
+        const projectsContainer = document.getElementById('projects-container');
+
+        // A map to assign colors to specific tags
+        const tagColors = {
+            'Lambda': 'bg-yellow-600/50',
+            'API Gateway': 'bg-brown-600/50',
+            'Amazon Rekognition': 'bg-purple-600/50',
+            'Amazon Cognito': 'bg-pink-600/50',
+            'Amazon Bedrock': 'bg-green-600/50',
+            'DynamoDB': 'bg-blue-600/50',
+            'Laravel': 'bg-red-600/50',
+            'MySQL': 'bg-blue-600/50',
+            'Real-time Chat': 'bg-green-600/50',
+            'Express.js': 'bg-gray-600/50',
+            'Google Cloud': 'bg-yellow-600/50',
+            'REST API': 'bg-purple-600/50',
+            'Team Project': 'bg-indigo-600/50',
+            'ReactJS': 'bg-sky-600/50',
+            'Node.js': 'bg-emerald-600/50',
+            'MongoDB': 'bg-lime-600/50'
+        };
+
+        projects.forEach(project => {
+            const projectSlide = document.createElement('div');
+            projectSlide.className = 'swiper-slide';
+
+            const tagsHtml = project.tags.map(tag => {
+                const colorClass = tagColors[tag] || 'bg-gray-700/50'; // Default color if tag not in map
+                return `<span class="skill-badge ${colorClass}">${tag}</span>`;
+            }).join('');
+
+            projectSlide.innerHTML = `
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 project-card">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                             <h3 class="text-xl font-bold text-white">${project.title}</h3>
+                             <a href="${project.githubLink}" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white text-2xl transition-colors duration-300">
+                                <i class="fab fa-github"></i>
+                             </a>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-4 flex-grow">${project.description}</p>
+                        <div class="flex flex-wrap">
+                           ${tagsHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+            projectsContainer.appendChild(projectSlide);
+        });
+
+        // --- SWIPER SLIDER SCRIPT ---
+        const swiper = new Swiper('.swiper-container', {
+            loop: true, // Infinite loop
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            slidesPerView: 3,
+            spaceBetween: 30,
+            breakpoints: {
+                0: {
+                    slidesPerView: 1
+                },
+                768: {
+                    slidesPerView: 2
+                },
+                1024: {
+                    slidesPerView: 3
+                },
+                1440: {
+                    slidesPerView: 3 // Prevent showing 4+ even on large screens
+                }
+            },
+            // Pagination
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            // Navigation arrows
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+
+        // --- MOBILE MENU SCRIPT ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+        for (let link of mobileMenuLinks) {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        }
+
+        // --- SCROLL ANIMATION SCRIPT ---
+        const sections = document.querySelectorAll('.fade-in-section');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+
+</html>
