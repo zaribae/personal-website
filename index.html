@@ -1,467 +1,165 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Azhari - Portfolio</title>
-    <!-- Updated Favicon for Terminal Theme -->
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230D1117'></rect><text x='15' y='60' font-size='50' font-family='Fira Code, monospace' fill='%234ade80'>&gt;_</text></svg>">
+    <title>Ahmad Azhari - CLI Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Added Fira Code for terminal look -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;700&family=Inter:wght@400;500&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Swiper.js CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Fira Code', monospace;
+            background-color: #1a1b26;
+            color: #a9b1d6;
+        }
+
+        #terminal {
+            height: 100vh;
+            padding: 1rem;
+            overflow-y: auto;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        #terminal::-webkit-scrollbar {
+            display: none;
+            /* Safari and Chrome */
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+        }
+
+        .prompt {
+            color: #bb9af7;
+            font-weight: 500;
+        }
+
+        #input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #a9b1d6;
+            padding-left: 0.5rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background-color: #a9b1d6;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
         @keyframes blink {
+
+            from,
+            to {
+                background-color: transparent;
+            }
+
             50% {
-                opacity: 0;
+                background-color: #a9b1d6;
             }
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0D1117;
-            /* GitHub Dark Background */
-            color: #C9D1D9;
-            /* GitHub Dark Text */
+        .command {
+            color: #82aaff;
         }
 
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .font-mono {
-            font-family: 'Fira Code', monospace;
+        .filename {
+            color: #7dcfff;
         }
 
-        .text-comment {
-            color: #8B949E;
-        }
-
-        /* Gray */
-        .text-keyword {
-            color: #FF7B72;
-        }
-
-        /* Red-orange */
-        .text-variable {
-            color: #FFA657;
-        }
-
-        /* Orange */
-        .text-string {
-            color: #79C0FF;
-        }
-
-        /* Blue */
-        .text-function {
-            color: #D2A8FF;
-        }
-
-        /* Purple */
-        .text-class {
-            color: #A5D6FF;
-        }
-
-        /* Light Blue */
-
-        .blinking-cursor {
-            animation: blink 1s step-end infinite;
-            background-color: #79C0FF;
-            display: inline-block;
-            width: 10px;
-            height: 1.2em;
-            margin-left: 4px;
-            vertical-align: bottom;
-        }
-
-        .section-divider {
-            border-top: 1px solid #30363D;
-        }
-
-        .skill-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            background-color: #21262D;
-            color: #79C0FF;
-            border: 1px solid #30363D;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.875rem;
+        .dirname {
+            color: #bb9af7;
             font-weight: 500;
-            margin: 0.25rem;
-            transition: all 0.2s ease-in-out;
         }
 
-        .skill-badge:hover {
-            background-color: #30363D;
-            transform: translateY(-2px);
+        .help-command {
+            color: #f7768e;
         }
 
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -31px;
-            top: 5px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background-color: #79C0FF;
-            border: 4px solid #0D1117;
+        .help-description {
+            color: #c0caf5;
         }
 
-        .timeline-border {
-            border-left-color: #30363D;
-        }
-
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .swiper-container {
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .swiper-slide {
-            height: auto;
-            display: flex;
-            justify-content: center;
-            align-items: stretch;
-        }
-
-        .project-card {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background-color: #161B22;
-            border: 1px solid #30363D;
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover {
-            border-color: #79C0FF;
-        }
-
-        .swiper-button-next,
-        .swiper-button-prev {
-            color: #79C0FF;
-        }
-
-        .swiper-button-next:after,
-        .swiper-button-prev:after {
-            font-size: 24px;
-        }
-
-        .swiper-pagination-bullet-active {
-            background: #79C0FF;
+        .link {
+            color: #73daca;
+            text-decoration: underline;
         }
     </style>
 </head>
 
-<body>
-
-    <!-- Header & Navigation -->
-    <header class="bg-gray-900/70 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-white font-mono"><span class="text-string">&gt;</span> Ahmad
-                Azhari</a>
-            <div class="hidden md:flex space-x-6 items-center font-mono text-sm">
-                <a href="#about" class="text-gray-300 hover:text-string transition-colors duration-300">About</a>
-                <a href="#experience"
-                    class="text-gray-300 hover:text-string transition-colors duration-300">Experience</a>
-                <a href="#projects" class="text-gray-300 hover:text-string transition-colors duration-300">Projects</a>
-                <a href="#skills" class="text-gray-300 hover:text-string transition-colors duration-300">Skills</a>
-                <a href="#contact"
-                    class="bg-blue-500/20 border border-blue-500 text-string hover:bg-blue-500/30 font-medium py-2 px-4 rounded-md transition-all duration-300">Contact</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/90 border-t border-gray-800">
-            <a href="#about" class="block py-3 px-4 text-sm text-gray-300 hover:bg-gray-800 font-mono">About</a>
-            <a href="#experience"
-                class="block py-3 px-4 text-sm text-gray-300 hover:bg-gray-800 font-mono">Experience</a>
-            <a href="#projects" class="block py-3 px-4 text-sm text-gray-300 hover:bg-gray-800 font-mono">Projects</a>
-            <a href="#skills" class="block py-3 px-4 text-sm text-gray-300 hover:bg-gray-800 font-mono">Skills</a>
-            <a href="#contact" class="block py-3 px-4 text-sm text-gray-300 hover:bg-gray-800 font-mono">Contact</a>
+<body class="text-lg">
+    <div id="terminal" onclick="document.getElementById('input').focus()">
+        <div id="output"></div>
+        <div class="input-line">
+            <span id="prompt" class="prompt">guest@azhari.dev:~$</span>
+            <input type="text" id="input" autofocus autocomplete="off" autocorrect="off" autocapitalize="off"
+                spellcheck="false">
+            <span id="cursor" class="cursor"></span>
         </div>
-    </header>
+    </div>
 
-    <main class="container mx-auto px-6">
-
-        <!-- Hero Section -->
-        <section id="home" class="text-left min-h-screen flex flex-col justify-center">
-            <div>
-                <div class="font-mono text-2xl md:text-4xl">
-                    <span class="text-keyword">const</span> <span class="text-class">Person</span> = {
-                    <div class="pl-8">
-                        <span class="text-variable">name</span>: <span class="text-string">'<span
-                                id="type-name"></span>'</span>,
-                        <br />
-                        <span class="text-variable">title</span>: <span class="text-string">'<span
-                                id="type-title"></span>'</span><span id="cursor" class="blinking-cursor"></span>
-                    </div>
-                    };
-                </div>
-                <div id="hero-buttons" class="mt-12 opacity-0 transition-opacity duration-1000">
-                    <div class="flex items-center space-x-6 mb-8 text-3xl text-gray-400">
-                        <a href="https://www.linkedin.com/in/ahmad-azhari/" target="_blank" rel="noopener noreferrer"
-                            class="hover:text-white transition-colors duration-300"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://github.com/zaribae" target="_blank" rel="noopener noreferrer"
-                            class="hover:text-white transition-colors duration-300"><i class="fab fa-github"></i></a>
-                        <a href="mailto:ahmadazzhari@gmail.com"
-                            class="hover:text-white transition-colors duration-300"><i class="fas fa-envelope"></i></a>
-                    </div>
-                    <a href="assets/CV Ahmad Azhari.pdf" download="CV-Ahmad-Azhari.pdf"
-                        class="bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 font-medium py-3 px-6 rounded-md transition-all duration-300 text-lg inline-flex items-center font-mono transform hover:scale-105">
-                        <span class="text-green-400 mr-2">$</span>
-                        <span>./download-cv.sh</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Me Section -->
-        <section id="about" class="py-20 fade-in-section section-divider">
-            <h2 class="text-3xl font-bold text-white text-left mb-8 font-mono"><span class="text-comment">// About
-                    Me</span></h2>
-            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-12">
-                <div class="w-full md:w-2/3">
-                    <p class="mb-4 text-lg text-gray-300 leading-relaxed">
-                        I am a passionate Cloud Engineer with a strong foundation in backend development and cloud
-                        computing, recently graduated from Sriwijaya University. My academic journey, culminating in a
-                        3.95 GPA, has provided me with a solid foundation in software engineering principles.
-                    </p>
-                    <p class="mb-4 text-lg text-gray-300 leading-relaxed">
-                        Through internships and projects, I've gained hands-on experience in building and deploying
-                        robust web applications. I am a quick learner, a collaborative team player, and always ready for
-                        a new challenge.
-                    </p>
-                </div>
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <img src="images/profile.png" alt="Ahmad Azhari"
-                        class="rounded-md w-52 h-52 md:w-64 md:h-64 object-cover border-2 border-gray-800 shadow-xl">
-                </div>
-            </div>
-        </section>
-
-        <!-- Experience Section -->
-        <section id="experience" class="py-20 fade-in-section section-divider">
-            <h2 class="text-3xl font-bold text-white text-left mb-16 font-mono"><span class="text-comment">//
-                    Experience</span></h2>
-            <div class="max-w-3xl relative border-l-2 timeline-border pl-12">
-                <!-- PT. Mastersystem Infotama -->
-                <div class="mb-12 timeline-item">
-                    <h3 class="text-xl font-bold text-class">Cloud Engineer</h3>
-                    <p class="font-semibold text-white">PT. Mastersystem Infotama</p>
-                    <p class="text-sm text-comment mb-2">June 2025 - Present</p>
-                    <ul class="list-disc list-inside text-gray-400 space-y-1">
-                        <li>Design, implement, and manage cloud-based infrastructure and services.</li>
-                        <li>Automate deployment and management processes using CI/CD pipelines.</li>
-                        <li>Monitor system performance and ensure reliability and security of the cloud environment.
-                        </li>
-                    </ul>
-                </div>
-                <!-- Altrusights -->
-                <div class="mb-12 timeline-item">
-                    <h3 class="text-xl font-bold text-class">Web Developer Intern</h3>
-                    <p class="font-semibold text-white">Altrusights</p>
-                    <p class="text-sm text-comment mb-2">Feb 2025 - May 2025</p>
-                    <ul class="list-disc list-inside text-gray-400 space-y-1">
-                        <li>Engineered core features for a warehouse management system using Laravel, jQuery, and MySQL.
-                        </li>
-                        <li>Developed functionalities for stock transfer, purchase orders, delivery orders, and receipt
-                            notes.</li>
-                        <li>Supported backend development and enhanced frontend interactivity with API integrations.
-                        </li>
-                    </ul>
-                </div>
-                <!-- Bangkit Academy -->
-                <div class="mb-12 timeline-item">
-                    <h3 class="text-xl font-bold text-class">Cloud Computing Learning Path</h3>
-                    <p class="font-semibold text-white">Bangkit Academy</p>
-                    <p class="text-sm text-comment mb-2">Aug 2023 - Jan 2024</p>
-                    <ul class="list-disc list-inside text-gray-400 space-y-1">
-                        <li>Led backend development for a capstone project, building a RESTful API with Express and JWT.
-                        </li>
-                        <li>Deployed applications to Google Cloud Platform, gaining experience with Cloud Run and Cloud
-                            SQL.</li>
-                        <li>Acquired key soft skills in time management, critical thinking, and project management.</li>
-                    </ul>
-                </div>
-                <!-- Lab Assistant -->
-                <div class="timeline-item">
-                    <h3 class="text-xl font-bold text-class">Lab Assistant</h3>
-                    <p class="font-semibold text-white">Sriwijaya University Advanced Programming Laboratory</p>
-                    <p class="text-sm text-comment mb-2">Oct 2023 - Dec 2023</p>
-                    <ul class="list-disc list-inside text-gray-400 space-y-1">
-                        <li>Managed laboratory operations and supervised class sessions.</li>
-                        <li>Conducted a public training session on Network Automation using Python and GNS3.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="py-20 fade-in-section section-divider">
-            <h2 class="text-3xl font-bold text-white text-left mb-12 font-mono"><span class="text-comment">// Featured
-                    Projects</span></h2>
-            <div class="swiper-container relative max-w-6xl mx-auto">
-                <div id="projects-container" class="swiper-wrapper">
-                    <!-- Slides will be inserted here by JavaScript -->
-                </div>
-                <div class="swiper-pagination mt-8"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="py-20 fade-in-section section-divider">
-            <h2 class="text-3xl font-bold text-white text-left mb-12 font-mono"><span class="text-comment">// Technical
-                    Skills</span></h2>
-            <div class="max-w-4xl mx-auto text-center">
-                <span class="skill-badge">JavaScript</span>
-                <span class="skill-badge">Express</span>
-                <span class="skill-badge">Hapi</span>
-                <span class="skill-badge">jQuery</span>
-                <span class="skill-badge">PHP</span>
-                <span class="skill-badge">Laravel</span>
-                <span class="skill-badge">ReactJS</span>
-                <span class="skill-badge">Cloud Computing</span>
-                <span class="skill-badge">MySQL</span>
-                <span class="skill-badge">PostgreSQL</span>
-                <span class="skill-badge">MongoDB</span>
-                <span class="skill-badge">REST API</span>
-                <span class="skill-badge">Git</span>
-                <span class="skill-badge">Java</span>
-                <span class="skill-badge">OOP</span>
-                <span class="skill-badge">Spring</span>
-                <span class="skill-badge">Python</span>
-                <span class="skill-badge">Go</span>
-            </div>
-        </section>
-
-        <!-- Education Section -->
-        <section id="education" class="py-20 fade-in-section section-divider">
-            <h2 class="text-3xl font-bold text-white text-left mb-12 font-mono"><span class="text-comment">//
-                    Education</span></h2>
-            <div class="max-w-2xl bg-gray-900 border border-gray-800 p-8 rounded-lg">
-                <h3 class="text-2xl font-bold text-class">Sriwijaya University</h3>
-                <p class="text-lg text-white mt-2">Faculty of Computer Science - Informatics Engineering</p>
-                <p class="text-comment mt-1">2021 - 2025</p>
-                <p class="text-white font-semibold text-lg mt-4"><span class="text-variable">GPA</span>: <span
-                        class="text-string">3.95</span> / <span class="text-string">4.00</span></p>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 text-center fade-in-section section-divider">
-            <h2 class="text-3xl font-bold text-white mb-4 font-mono">Get In Touch()</h2>
-            <p class="max-w-2xl mx-auto mb-8 text-lg text-gray-400">I'm currently looking for new opportunities. Whether
-                you have a question or just want to say hi, feel free to reach out!</p>
-            <a href="mailto:mahmadazzhari@gmail.com"
-                class="bg-blue-500/20 border border-blue-500 text-string hover:bg-blue-500/30 font-bold py-4 px-10 rounded-md transition-all duration-300 text-lg inline-flex items-center font-mono">
-                return "Say Hello"
-            </a>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="py-6 section-divider">
-        <div class="container mx-auto px-6 text-center text-comment">
-            <p>&copy; 2025 Ahmad Azhari. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Swiper.js JS -->
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        // --- TYPING ANIMATION SCRIPT ---
-        const nameText = "Ahmad Azhari";
-        const titleText = "Cloud Engineer";
-        const nameEl = document.getElementById('type-name');
-        const titleEl = document.getElementById('type-title');
-        const cursorEl = document.getElementById('cursor');
-        const heroButtons = document.getElementById('hero-buttons');
-        let nameIndex = 0;
-        let titleIndex = 0;
+        const terminal = document.getElementById('terminal');
+        const output = document.getElementById('output');
+        const input = document.getElementById('input');
+        const cursor = document.getElementById('cursor');
+        const promptEl = document.getElementById('prompt');
 
-        function typeName() {
-            if (nameIndex < nameText.length) {
-                nameEl.innerHTML += nameText.charAt(nameIndex);
-                nameIndex++;
-                setTimeout(typeName, 100);
-            } else {
-                setTimeout(typeTitle, 500);
+        const fileSystem = {
+            'about.md': {
+                content: `
+# Ahmad Azhari
+A passionate Cloud Engineer with a strong foundation in backend development and cloud computing.
+My journey in tech is driven by a desire to build robust, scalable, and efficient systems.
+I thrive on solving complex problems and I'm always eager to learn new technologies.
+            `
+            },
+            'skills.txt': {
+                content: `
+- JavaScript      - Express         - Hapi
+- jQuery          - PHP             - Laravel
+- ReactJS         - Cloud Computing - MySQL
+- PostgreSQL      - MongoDB         - REST API
+- Git             - Java            - OOP
+- Spring          - Python          - Go
+            `
+            },
+            'contact.txt': {
+                content: `
+- **Email**: <a class="link" href="mailto:ahmadazzhari@gmail.com">ahmadazzhari@gmail.com</a>
+- **GitHub**: <a class="link" href="https://github.com/zaribae" target="_blank">github.com/zaribae</a>
+- **LinkedIn**: <a class="link" href="https://www.linkedin.com/in/ahmad-azhari/" target="_blank">linkedin.com/in/ahmad-azhari</a>
+            `
             }
-        }
+        };
 
-        function typeTitle() {
-            if (titleIndex < titleText.length) {
-                titleEl.innerHTML += titleText.charAt(titleIndex);
-                titleIndex++;
-                setTimeout(typeTitle, 100);
-            } else {
-                heroButtons.style.opacity = '1';
-                setTimeout(resetAndStart, 5000); // Wait 5 seconds then restart
-            }
-        }
-
-        function resetAndStart() {
-            nameEl.innerHTML = '';
-            titleEl.innerHTML = '';
-            nameIndex = 0;
-            titleIndex = 0;
-            cursorEl.style.display = 'inline-block';
-            // heroButtons.style.opacity = '0';
-            setTimeout(typeName, 500);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(typeName, 500);
-        });
-
-        // --- DYNAMIC PROJECTS SCRIPT ---
-        const projects = [
+        const projectsData = [
             {
                 title: 'SpendWise - AI-Powered Expense Tracker',
                 githubLink: 'https://github.com/zaribae/spendwise-expense-tracker-app.git',
-                description: 'SpendWise is a modern, serverless web application designed to help you track your expenses and income effortlessly. Leveraging the power of AI, you can add transactions using natural language. The application provides insightful daily and monthly financial overviews, with all data securely stored in the cloud.',
+                description: 'A modern, serverless web application to track expenses using natural language, powered by AI. Provides insightful daily and monthly financial overviews.',
                 tags: ['Lambda', 'API Gateway', 'Amazon Cognito', 'DynamoDB', 'Amazon Bedrock']
             },
             {
                 title: 'Serverless Image Recognition & Tagging on AWS',
                 githubLink: 'https://github.com/zaribae/serverless-image-recognition-with-aws.git',
-                description: 'This guide will walk you through building an event-driven, serverless application that automatically analyzes and tags images using AWS services. Users will be able to upload images, which will be automatically tagged using AI, and then search for those images based on their tags.',
+                description: 'An event-driven, serverless application that automatically analyzes and tags images using AI, allowing users to search for images based on their tags.',
                 tags: ['Lambda', 'API Gateway', 'S3', 'DynamoDB', 'Amazon Rekognition']
             },
             {
                 title: 'AI Customer Service ChatBot',
                 githubLink: 'https://github.com/zaribae/aws-ai-customer-chatbot.git',
-                description: 'This project is a serverless, AI-powered customer service chatbot built on Amazon Web Services (AWS). It provides a simple web interface for customers to ask questions and receive intelligent, context-aware responses generated by Amazon Bedrock.',
+                description: 'A serverless, AI-powered customer service chatbot built on AWS that provides intelligent, context-aware responses generated by Amazon Bedrock.',
                 tags: ['Lambda', 'API Gateway', 'Amazon Bedrock', 'DynamoDB']
             },
             {
@@ -482,89 +180,133 @@
                 description: 'Developed the backend RESTful API for a national tech competition website, handling registrations and event information using Laravel.',
                 tags: ['Laravel', 'REST API', 'Team Project']
             },
-            // {
-            //     title: 'New Awesome Project',
-            //     githubLink: 'https://github.com/zaribae/new-awesome-project',
-            //     description: 'A description of your new awesome project. It solves a really cool problem and uses cutting-edge technology.',
-            //     tags: ['ReactJS', 'Node.js', 'MongoDB']
-            // }
         ];
 
-        const projectsContainer = document.getElementById('projects-container');
-
-        projects.forEach(project => {
-            const projectSlide = document.createElement('div');
-            projectSlide.className = 'swiper-slide';
-
-            const tagsHtml = project.tags.map(tag => `<span class="skill-badge">${tag}</span>`).join('');
-
-            projectSlide.innerHTML = `
-                <div class="rounded-lg overflow-hidden project-card">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <div class="flex justify-between items-start mb-4">
-                             <h3 class="text-xl font-bold text-class">${project.title}</h3>
-                             <a href="${project.githubLink}" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-string text-2xl transition-colors duration-300">
-                                <i class="fab fa-github"></i>
-                             </a>
-                        </div>
-                        <p class="text-sm text-comment mb-4 flex-grow">${project.description}</p>
-                        <div class="flex flex-wrap mt-auto">
-                           ${tagsHtml}
-                        </div>
-                    </div>
-                </div>
+        const commands = {
+            help: () => {
+                return `
+Available commands:
+  <span class="help-command">help</span>         <span class="help-description">Show this help message.</span>
+  <span class="help-command">whoami</span>       <span class="help-description">Display a short bio.</span>
+  <span class="help-command">experience</span>   <span class="help-description">Display work and academic experience.</span>
+  <span class="help-command">projects</span>     <span class="help-description">List all projects.</span>
+  <span class="help-command">ls</span>           <span class="help-description">List available files.</span>
+  <span class="help-command">cat [file]</span>   <span class="help-description">Display content of a file.</span>
+  <span class="help-command">contact</span>      <span class="help-description">Show contact information.</span>
+  <span class="help-command">clear</span>        <span class="help-description">Clear the terminal screen.</span>
             `;
-            projectsContainer.appendChild(projectSlide);
-        });
-
-        // --- SWIPER SLIDER SCRIPT ---
-        const swiper = new Swiper('.swiper-container', {
-            loop: true,
-            autoplay: {
-                delay: 4000,
-                disableOnInteraction: false,
             },
-            slidesPerView: 3,
-            spaceBetween: 30,
-            breakpoints: {
-                0: {
-                    slidesPerView: 1
-                },
-                768: {
-                    slidesPerView: 2
-                },
-                1024: {
-                    slidesPerView: 3
-                },
-                1440: {
-                    slidesPerView: 3 // Prevent showing 4+ even on large screens
-                }
+            whoami: () => fileSystem['about.md'].content,
+            experience: () => `
+## Cloud Engineer @ PT. Mastersystem Infotama
+(June 2025 - Present)
+- Design, implement, and manage cloud-based infrastructure and services.
+- Automate deployment and management processes using CI/CD pipelines.
+- Monitor system performance and ensure reliability and security of the cloud environment.
+
+---
+
+## Web Developer Intern @ Altrusights
+(Feb 2025 - May 2025)
+- Engineered core features for a warehouse management system using Laravel, jQuery, and MySQL.
+- Developed functionalities for stock transfer, purchase orders, delivery orders, and receipt notes.
+- Supported backend development and enhanced frontend interactivity with API integrations.
+
+---
+
+## Cloud Computing Learning Path @ Bangkit Academy
+(Aug 2023 - Jan 2024)
+- Led backend development for a capstone project, building a RESTful API with Express and JWT.
+- Deployed applications to Google Cloud Platform, gaining experience with Cloud Run and Cloud SQL.
+- Acquired key soft skills in time management, critical thinking, and project management.
+
+---
+
+## Lab Assistant @ Sriwijaya University Advanced Programming Laboratory
+(Oct 2023 - Dec 2023)
+- Managed laboratory operations and supervised class sessions.
+- Conducted a public training session on Network Automation using Python and GNS3.
+`,
+            projects: () => {
+                return projectsData.map(p => `
+## ${p.title}
+- **Description**: ${p.description}
+- **Tech Stack**: ${p.tags.join(', ')}
+- **Link**: <a class="link" href="${p.githubLink}" target="_blank">${p.githubLink}</a>
+`).join('\n---\n');
             },
-            pagination: { el: '.swiper-pagination', clickable: true },
-            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+            contact: () => fileSystem['contact.txt'].content,
+            ls: () => {
+                return Object.keys(fileSystem).map(key => `<span class="filename">${key}</span>`).join('  ');
+            },
+            cat: (args) => {
+                const filename = args[0];
+                if (!filename) return 'Usage: cat [file]';
+
+                const file = fileSystem[filename];
+                if (!file) return `cat: '${filename}': No such file or directory`;
+
+                return file.content;
+            },
+            clear: () => {
+                output.innerHTML = '';
+                return '';
+            }
+        };
+
+        function print(html) {
+            output.innerHTML += `<div style="white-space: pre-wrap;">${html}</div>`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function printCommand(command) {
+            const promptText = promptEl.textContent;
+            output.innerHTML += `<div class="input-line"><span class="prompt">${promptText}</span> <span class="command">${command}</span></div>`;
+        }
+
+        function showWelcome() {
+            const welcomeMessage = `
+Welcome to my interactive portfolio.
+Type <span class="command">help</span> to see the list of available commands.
+        `;
+            print(welcomeMessage);
+        }
+
+        input.addEventListener('input', () => {
+            // Dynamically resize the input field based on its content
+            const minSize = 1;
+            const newSize = input.value.length > minSize ? input.value.length : minSize;
+            input.setAttribute('size', newSize);
         });
 
-        // --- MOBILE MENU SCRIPT ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-        });
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                const commandStr = input.value.trim();
+                if (commandStr) {
+                    printCommand(commandStr);
+                    const [cmd, ...args] = commandStr.split(' ');
 
-        // --- SCROLL ANIMATION SCRIPT ---
-        const sections = document.querySelectorAll('.fade-in-section');
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
+                    if (commands[cmd]) {
+                        const result = commands[cmd](args);
+                        if (result) print(result);
+                    } else {
+                        print(`command not found: ${cmd}`);
+                    }
                 }
-            });
-        }, { threshold: 0.1 });
-        sections.forEach(section => observer.observe(section));
+                input.value = '';
+                // Reset size after enter
+                input.setAttribute('size', 1);
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        });
+
+        input.addEventListener('focus', () => cursor.style.display = 'inline-block');
+        input.addEventListener('blur', () => cursor.style.display = 'none');
+
+        // Initialize input size
+        input.setAttribute('size', 1);
+        showWelcome();
     </script>
-
 </body>
 
 </html>
