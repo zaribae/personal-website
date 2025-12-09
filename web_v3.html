@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmad Azhari - Portfolio Website</title>
+    <!-- Favicon Ditambahkan -->
+    <link rel="icon" type="image/svg+xml" href="./images/icon.svg">
+    <link rel="apple-touch-icon" href="./images/icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fira Code', monospace;
+            background-color: #1a1b26;
+            color: #a9b1d6;
+        }
+
+        #terminal {
+            height: 100vh;
+            padding: 0.75rem;
+            overflow-y: auto;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        #terminal::-webkit-scrollbar {
+            display: none;
+            /* Safari and Chrome */
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+        }
+
+        .prompt {
+            color: #bb9af7;
+            font-weight: 500;
+        }
+
+        #input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #a9b1d6;
+            padding-left: 0.5rem;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background-color: #a9b1d6;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+
+            from,
+            to {
+                background-color: transparent;
+            }
+
+            50% {
+                background-color: #a9b1d6;
+            }
+        }
+
+        .command {
+            color: #82aaff;
+        }
+
+        .filename {
+            color: #7dcfff;
+        }
+
+        .dirname {
+            color: #bb9af7;
+            font-weight: 500;
+        }
+
+        .help-command {
+            color: #f7768e;
+        }
+
+        .help-description {
+            color: #c0caf5;
+        }
+
+        .link {
+            color: #73daca;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body class="text-base sm:text-lg">
+    <div id="terminal" onclick="document.getElementById('input').focus()">
+        <div id="output"></div>
+        <div class="input-line">
+            <span id="prompt" class="prompt">guest@azhari.dev:~$</span>
+            <input type="text" id="input" autofocus autocomplete="off" autocorrect="off" autocapitalize="off"
+                spellcheck="false">
+            <span id="cursor" class="cursor"></span>
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const output = document.getElementById('output');
+        const input = document.getElementById('input');
+        const cursor = document.getElementById('cursor');
+        const promptEl = document.getElementById('prompt');
+
+        const fileSystem = {
+            'about.md': {
+                content: `
+# Ahmad Azhari
+A passionate Cloud Engineer with a strong foundation in backend development and cloud computing.
+My journey in tech is driven by a desire to build robust, scalable, and efficient systems.
+I thrive on solving complex problems and I'm always eager to learn new technologies.
+            `
+            },
+            'skills.txt': {
+                content: `
+- JavaScript      - Express         - Hapi
+- jQuery          - PHP             - Laravel
+- ReactJS         - Cloud Computing - MySQL
+- PostgreSQL      - MongoDB         - REST API
+- Git             - Java            - OOP
+- Spring          - Python          - Go
+            `
+            },
+            'contact.txt': {
+                content: `
+- **Email**: <a class="link" href="mailto:ahmadazzhari@gmail.com">ahmadazzhari@gmail.com</a>
+- **GitHub**: <a class="link" href="https://github.com/zaribae" target="_blank">github.com/zaribae</a>
+- **LinkedIn**: <a class="link" href="https://www.linkedin.com/in/ahmadazzhari/" target="_blank">linkedin.com/in/ahmadazzhari</a>
+            `
+            }
+        };
+
+        const projectsData = [
+            {
+                title: 'SpendWise - AI-Powered Expense Tracker',
+                githubLink: 'https://github.com/zaribae/spendwise-expense-tracker-app.git',
+                description: 'A modern, serverless web application to track expenses using natural language, powered by AI. Provides insightful daily and monthly financial overviews.',
+                tags: ['Lambda', 'API Gateway', 'Amazon Cognito', 'DynamoDB', 'Amazon Bedrock']
+            },
+            {
+                title: 'Serverless Image Recognition & Tagging on AWS',
+                githubLink: 'https://github.com/zaribae/serverless-image-recognition-with-aws.git',
+                description: 'An event-driven, serverless application that automatically analyzes and tags images using AI, allowing users to search for images based on their tags.',
+                tags: ['Lambda', 'API Gateway', 'S3', 'DynamoDB', 'Amazon Rekognition']
+            },
+            {
+                title: 'AI Customer Service ChatBot',
+                githubLink: 'https://github.com/zaribae/aws-ai-customer-chatbot.git',
+                description: 'A serverless, AI-powered customer service chatbot built on AWS that provides intelligent, context-aware responses generated by Amazon Bedrock.',
+                tags: ['Lambda', 'API Gateway', 'Amazon Bedrock', 'DynamoDB']
+            },
+            {
+                title: 'FoodParadise',
+                githubLink: 'https://github.com/zaribae/FoodParadise',
+                description: 'A robust restaurant food ordering website built with Laravel. Features include real-time chat, secure PayPal payments, reservations, and more.',
+                tags: ['Laravel', 'MySQL', 'Real-time Chat']
+            },
+            {
+                title: 'Clothize App',
+                githubLink: 'https://github.com/zaribae/Clothize-App',
+                description: 'A platform for local tailoring and automatic clothes size measurement. I built the RESTful API using Express and deployed it on Google Cloud Run.',
+                tags: ['Express.js', 'Google Cloud', 'REST API']
+            },
+            {
+                title: 'SRIFOTON 2023 Website',
+                githubLink: 'https://github.com/zaribae/SRIFOTON-2023',
+                description: 'Developed the backend RESTful API for a national tech competition website, handling registrations and event information using Laravel.',
+                tags: ['Laravel', 'REST API', 'Team Project']
+            },
+        ];
+
+        const commands = {
+            help: () => {
+                return `
+Available commands:
+  <span class="help-command">help</span>         <span class="help-description">Show this help message.</span>
+  <span class="help-command">whoami</span>       <span class="help-description">Display a short bio.</span>
+  <span class="help-command">experience</span>   <span class="help-description">Display work and academic experience.</span>
+  <span class="help-command">projects</span>     <span class="help-description">List all projects.</span>
+  <span class="help-command">ls</span>           <span class="help-description">List available files.</span>
+  <span class="help-command">cat [file]</span>   <span class="help-description">Display content of a file.</span>
+  <span class="help-command">contact</span>      <span class="help-description">Show contact information.</span>
+  <span class="help-command">clear</span>        <span class="help-description">Clear the terminal screen.</span>
+            `;
+            },
+            whoami: () => fileSystem['about.md'].content,
+            experience: () => `
+## Cloud Engineer @ PT. Mastersystem Infotama
+(June 2025 - Present)
+- Design, implement, and manage cloud-based infrastructure and services.
+- Automate deployment and management processes using CI/CD pipelines.
+- Monitor system performance and ensure reliability and security of the cloud environment.
+
+---
+
+## Web Developer Intern @ Altrusights
+(Feb 2025 - May 2025)
+- Engineered core features for a warehouse management system using Laravel, jQuery, and MySQL.
+- Developed functionalities for stock transfer, purchase orders, delivery orders, and receipt notes.
+- Supported backend development and enhanced frontend interactivity with API integrations.
+
+---
+
+## Cloud Computing Learning Path @ Bangkit Academy
+(Aug 2023 - Jan 2024)
+- Led backend development for a capstone project, building a RESTful API with Express and JWT.
+- Deployed applications to Google Cloud Platform, gaining experience with Cloud Run and Cloud SQL.
+- Acquired key soft skills in time management, critical thinking, and project management.
+
+---
+
+## Lab Assistant @ Sriwijaya University Advanced Programming Laboratory
+(Oct 2023 - Dec 2023)
+- Managed laboratory operations and supervised class sessions.
+- Conducted a public training session on Network Automation using Python and GNS3.
+`,
+            projects: () => {
+                return projectsData.map(p => `
+## ${p.title}
+- **Description**: ${p.description}
+- **Tech Stack**: ${p.tags.join(', ')}
+- **Link**: <a class="link" href="${p.githubLink}" target="_blank">${p.githubLink}</a>
+`).join('\n---\n');
+            },
+            contact: () => fileSystem['contact.txt'].content,
+            ls: () => {
+                return Object.keys(fileSystem).map(key => `<span class="filename">${key}</span>`).join('  ');
+            },
+            cat: (args) => {
+                const filename = args[0];
+                if (!filename) return 'Usage: cat [file]';
+
+                const file = fileSystem[filename];
+                if (!file) return `cat: '${filename}': No such file or directory`;
+
+                return file.content;
+            },
+            clear: () => {
+                output.innerHTML = '';
+                return '';
+            }
+        };
+
+        function print(html) {
+            output.innerHTML += `<div style="white-space: pre-wrap;">${html}</div>`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function printCommand(command) {
+            const promptText = promptEl.textContent;
+            output.innerHTML += `<div class="input-line"><span class="prompt">${promptText}</span> <span class="command">${command}</span></div>`;
+        }
+
+        function showWelcome() {
+            const welcomeMessage = `
+Welcome to my interactive portfolio.
+Type <span class="command">help</span> to see the list of available commands.
+        `;
+            print(welcomeMessage);
+        }
+
+        input.addEventListener('input', () => {
+            // Dynamically resize the input field based on its content
+            const minSize = 1;
+            const newSize = input.value.length > minSize ? input.value.length : minSize;
+            input.setAttribute('size', newSize);
+        });
+
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                const commandStr = input.value.trim();
+                if (commandStr) {
+                    printCommand(commandStr);
+                    const [cmd, ...args] = commandStr.split(' ');
+
+                    if (commands[cmd]) {
+                        const result = commands[cmd](args);
+                        if (result) print(result);
+                    } else {
+                        print(`command not found: ${cmd}`);
+                    }
+                }
+                input.value = '';
+                // Reset size after enter
+                input.setAttribute('size', 1);
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+        });
+
+        input.addEventListener('focus', () => cursor.style.display = 'inline-block');
+        input.addEventListener('blur', () => cursor.style.display = 'none');
+
+        // Initialize input size
+        input.setAttribute('size', 1);
+        showWelcome();
+    </script>
+</body>
+
+</html>

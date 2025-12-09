@@ -1,314 +1,612 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Azhari - Portfolio Website</title>
-    <!-- Favicon Ditambahkan -->
-    <link rel="icon" type="image/svg+xml" href="./images/icon.svg">
-    <link rel="apple-touch-icon" href="./images/icon.svg">
+    <title>Ahmad Azhari | Cloud Engineer</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --cursor-x: 0px;
+            --cursor-y: 0px;
+        }
+
         body {
-            font-family: 'Fira Code', monospace;
-            background-color: #1a1b26;
-            color: #a9b1d6;
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            /* Slate 900 */
+            color: #94a3b8;
+            /* Slate 400 */
+            line-height: 1.6;
         }
 
-        #terminal {
-            height: 100vh;
-            padding: 0.75rem;
-            overflow-y: auto;
-            scrollbar-width: none;
-            /* Firefox */
+        /* --- SPOTLIGHT EFFECT CSS --- */
+        .spotlight-card {
+            background-color: transparent;
+            transition: background-color 0.3s;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
         }
 
-        #terminal::-webkit-scrollbar {
-            display: none;
-            /* Safari and Chrome */
-        }
-
-        .input-line {
-            display: flex;
-            align-items: center;
-        }
-
-        .prompt {
-            color: #bb9af7;
-            font-weight: 500;
-        }
-
-        #input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #a9b1d6;
-            padding-left: 0.5rem;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 0.6em;
-            height: 1.2em;
-            background-color: #a9b1d6;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-
-            from,
-            to {
-                background-color: transparent;
+        /* Only show hover effect on devices that support hover (Mouse) */
+        @media (hover: hover) {
+            .spotlight-card:hover {
+                background-color: rgba(30, 41, 59, 0.4);
+                box-shadow: inset 0 1px 0 0 rgba(148, 163, 184, 0.1);
             }
 
-            50% {
-                background-color: #a9b1d6;
+            .spotlight-card:hover .spotlight-overlay {
+                opacity: 1;
             }
         }
 
-        .command {
-            color: #82aaff;
+        .spotlight-overlay {
+            pointer-events: none;
+            position: absolute;
+            inset: 0px;
+            z-index: 0;
+            transition: opacity 0.5s;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+                    rgba(56, 189, 248, 0.08),
+                    transparent 40%);
+            opacity: 0;
         }
 
-        .filename {
-            color: #7dcfff;
+        /* --- NAVIGATION STYLING --- */
+        .nav-link.active .nav-line {
+            width: 3rem;
+            background-color: #f8fafc;
         }
 
-        .dirname {
-            color: #bb9af7;
-            font-weight: 500;
+        .nav-link.active span {
+            color: #f8fafc;
         }
 
-        .help-command {
-            color: #f7768e;
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .help-description {
-            color: #c0caf5;
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
         }
 
-        .link {
-            color: #73daca;
-            text-decoration: underline;
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
         }
     </style>
 </head>
 
-<body class="text-base sm:text-lg">
-    <div id="terminal" onclick="document.getElementById('input').focus()">
-        <div id="output"></div>
-        <div class="input-line">
-            <span id="prompt" class="prompt">guest@azhari.dev:~$</span>
-            <input type="text" id="input" autofocus autocomplete="off" autocorrect="off" autocapitalize="off"
-                spellcheck="false">
-            <span id="cursor" class="cursor"></span>
+<body class="selection:bg-sky-300 selection:text-sky-900">
+
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-20 lg:px-24 lg:py-0">
+        <div class="lg:flex lg:justify-between lg:gap-4">
+
+            <!-- --- LEFT COLUMN: Sticky Header --- -->
+            <header class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:justify-between lg:py-24">
+                <div>
+                    <h1 class="text-4xl font-bold tracking-tight text-slate-100 sm:text-5xl">
+                        <a href="/">Ahmad Azhari</a>
+                    </h1>
+                    <h2 class="mt-3 text-xl font-medium tracking-tight text-slate-200 sm:text-2xl">
+                        Cloud Engineer
+                    </h2>
+                    <p class="mt-4 max-w-xs leading-normal text-slate-400">
+                        I build pixel-perfect, performant applications and the robust infrastructure that powers them.
+                    </p>
+
+                    <nav class="nav hidden lg:block mt-16" aria-label="In-page jump links">
+                        <ul class="w-max">
+                            <li>
+                                <a class="nav-link group flex items-center py-3 active" href="#about">
+                                    <span
+                                        class="nav-line mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200"></span>
+                                    <span
+                                        class="text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 transition-colors">About</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link group flex items-center py-3" href="#experience">
+                                    <span
+                                        class="nav-line mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200"></span>
+                                    <span
+                                        class="text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 transition-colors">Experience</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link group flex items-center py-3" href="#projects">
+                                    <span
+                                        class="nav-line mr-4 h-px w-8 bg-slate-600 transition-all group-hover:w-16 group-hover:bg-slate-200"></span>
+                                    <span
+                                        class="text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 transition-colors">Projects</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <ul class="ml-1 mt-8 flex items-center gap-5" aria-label="Social media">
+                    <li class="text-xs">
+                        <a class="block text-slate-400 hover:text-slate-100 transition-colors"
+                            href="https://github.com/zaribae" target="_blank" title="GitHub">
+                            <span class="sr-only">GitHub</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="text-xs">
+                        <a class="block text-slate-400 hover:text-slate-100 transition-colors"
+                            href="https://www.linkedin.com/in/ahmadazzhari/" target="_blank" title="LinkedIn">
+                            <span class="sr-only">LinkedIn</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="text-xs">
+                        <a class="block text-slate-400 hover:text-slate-100 transition-colors"
+                            href="mailto:ahmadazzhari@gmail.com" title="Email">
+                            <span class="sr-only">Email</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </header>
+
+            <!-- --- RIGHT COLUMN: Content --- -->
+            <main id="content" class="pt-24 lg:w-1/2 lg:py-0">
+
+                <!-- Section 1: About -->
+                <section id="about"
+                    class="mb-16 min-h-screen flex flex-col justify-center scroll-mt-16 lg:scroll-mt-0 lg:mb-0">
+                    <div
+                        class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:hidden">
+                        <h2 class="text-sm font-bold uppercase tracking-widest text-slate-200">About</h2>
+                    </div>
+
+                    <div class="text-slate-400 leading-relaxed space-y-4">
+                        <p>
+                            My journey into technology started with a simple curiosity about how the web works—a
+                            curiosity that grew into a passion for building complete digital solutions. Over the years,
+                            I’ve worked across various parts of the tech stack, using frameworks like <span
+                                class="font-medium text-slate-200">Laravel</span>, <span
+                                class="font-medium text-slate-200">Express.js</span>, and other modern tools to create
+                            applications that solve real problems.
+                        </p>
+                        <p>
+                            As I built more software, I learned that writing great code is only one piece of the puzzle.
+                            Ensuring it runs reliably, efficiently, and securely matters just as much. That realization
+                            pushed me deeper into the world of <span class="font-medium text-slate-200">Cloud
+                                Computing</span>. Today, I work at the intersection of <strong>Software
+                                Engineering</strong> and <strong>DevOps</strong>—designing scalable architectures on
+                            <span class="font-medium text-slate-200">AWS</span> and <span
+                                class="font-medium text-slate-200">Google Cloud</span>, managing deployments, and
+                            orchestrating production-ready infrastructure.
+                        </p>
+                        <p>
+                            Whether I'm optimizing databases, developing APIs, streamlining CI/CD pipelines, or
+                            integrating new technologies like Generative AI, my focus is always on building resilient,
+                            high-quality digital products. Outside of coding, I enjoy exploring emerging tech trends and
+                            sharing knowledge within the community.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- Section 2: Experience -->
+                <section id="experience"
+                    class="mb-16 min-h-screen flex flex-col justify-center scroll-mt-16 lg:scroll-mt-0 lg:mb-0">
+                    <div
+                        class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:hidden">
+                        <h2 class="text-sm font-bold uppercase tracking-widest text-slate-200">Experience</h2>
+                    </div>
+
+                    <div class="">
+                        <ol class="group/list space-y-12">
+
+                            <!-- Exp 1 -->
+                            <li
+                                class="spotlight-card p-4 lg:p-6 -mx-4 lg:-mx-6 hover:!opacity-100 group-hover/list:opacity-50 transition-opacity">
+                                <div class="spotlight-overlay"></div>
+                                <div class="relative grid sm:grid-cols-8 sm:gap-8 md:gap-4 z-10">
+                                    <header
+                                        class="mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">
+                                        Jun 2025 — Present
+                                    </header>
+                                    <div class="sm:col-span-6">
+                                        <h3 class="font-medium leading-snug text-slate-200">
+                                            <div>
+                                                <a class="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-sky-300 focus-visible:text-sky-300 group/link text-base"
+                                                    href="#">
+                                                    <span>Cloud Engineer · <span class="inline-block">Mastersystem
+                                                            Infotama</span></span>
+                                                </a>
+                                            </div>
+                                        </h3>
+                                        <p class="mt-2 text-sm leading-normal">
+                                            Designing scalable cloud architectures for enterprise clients. I bridge the
+                                            gap between development and operations by implementing CI/CD pipelines and
+                                            automating infrastructure provisioning using Terraform.
+                                        </p>
+                                        <ul class="mt-2 flex flex-wrap" aria-label="Technologies used">
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    AWS</div>
+                                            </li>
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    Terraform</div>
+                                            </li>
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    CI/CD</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Exp 2 -->
+                            <li
+                                class="spotlight-card p-4 lg:p-6 -mx-4 lg:-mx-6 hover:!opacity-100 group-hover/list:opacity-50 transition-opacity">
+                                <div class="spotlight-overlay"></div>
+                                <div class="relative grid sm:grid-cols-8 sm:gap-8 md:gap-4 z-10">
+                                    <header
+                                        class="mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">
+                                        Feb — May 2025
+                                    </header>
+                                    <div class="sm:col-span-6">
+                                        <h3 class="font-medium leading-snug text-slate-200">
+                                            <div>
+                                                <a class="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-sky-300 focus-visible:text-sky-300 group/link text-base"
+                                                    href="#">
+                                                    <span>Web Developer Intern · <span
+                                                            class="inline-block">Altrusights</span></span>
+                                                </a>
+                                            </div>
+                                        </h3>
+                                        <p class="mt-2 text-sm leading-normal">
+                                            I engineered core features for a warehouse management system using Laravel,
+                                            jQuery, and MySQL—covering stock transfers, purchase orders, delivery
+                                            orders, and receipt notes—while supporting backend development and improving
+                                            frontend interactivity through effective API integrations.
+                                        </p>
+                                        <ul class="mt-2 flex flex-wrap" aria-label="Technologies used">
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    Laravel</div>
+                                            </li>
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    MySQL</div>
+                                            </li>
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    JavaScript</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Exp 3 -->
+                            <li
+                                class="spotlight-card p-4 lg:p-6 -mx-4 lg:-mx-6 hover:!opacity-100 group-hover/list:opacity-50 transition-opacity">
+                                <div class="spotlight-overlay"></div>
+                                <div class="relative grid sm:grid-cols-8 sm:gap-8 md:gap-4 z-10">
+                                    <header
+                                        class="mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2">
+                                        Aug 2023 — Jan 2024
+                                    </header>
+                                    <div class="sm:col-span-6">
+                                        <h3 class="font-medium leading-snug text-slate-200">
+                                            <div>
+                                                <a class="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-sky-300 focus-visible:text-sky-300 group/link text-base"
+                                                    href="#">
+                                                    <span>Cloud Computing Cohort · <span class="inline-block">Bangkit
+                                                            Academy</span></span>
+                                                </a>
+                                            </div>
+                                        </h3>
+                                        <p class="mt-2 text-sm leading-normal">
+                                            Led backend development for a capstone project by building a RESTful API
+                                            using Express and JWT, deploying the application on Google Cloud Platform
+                                            with Cloud Run and Cloud SQL, and developing essential soft skills in time
+                                            management, critical thinking, and project management.
+                                        </p>
+                                        <ul class="mt-2 flex flex-wrap" aria-label="Technologies used">
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    Node.js</div>
+                                            </li>
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    GCP</div>
+                                            </li>
+                                            <li class="mr-1.5 mt-2">
+                                                <div
+                                                    class="flex items-center rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium leading-5 text-sky-300">
+                                                    REST API</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Section 3: Projects -->
+                <section id="projects"
+                    class="mb-16 min-h-screen flex flex-col justify-center scroll-mt-16 lg:scroll-mt-0 lg:mb-0">
+                    <div
+                        class="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 lg:hidden">
+                        <h2 class="text-sm font-bold uppercase tracking-widest text-slate-200">Projects</h2>
+                    </div>
+
+                    <div class="">
+                        <ul class="group/list space-y-12">
+
+                            <!-- Project 1 -->
+                            <li
+                                class="spotlight-card p-4 lg:p-6 -mx-4 lg:-mx-6 hover:!opacity-100 group-hover/list:opacity-50 transition-opacity">
+                                <div class="spotlight-overlay"></div>
+                                <div class="relative grid gap-4 sm:grid-cols-8 sm:gap-8 md:gap-4 z-10">
+                                    <div class="sm:col-span-2">
+                                        <!-- Replace 'https://placehold.co/200x120/1e293b/475569?text=SpendWise' with your screenshot path, e.g., 'images/spendwise.png' -->
+                                        <img src="images/dompethub-1.png" alt="DompetHub Screenshot"
+                                            class="rounded border-2 border-slate-200/10 transition group-hover:border-slate-200/30 sm:order-1 sm:col-span-2 sm:translate-y-1 w-full h-auto object-cover"
+                                            loading="lazy" />
+                                    </div>
+                                    <div class="sm:col-span-6">
+                                        <h3 class="font-medium leading-snug text-slate-200 flex items-center gap-2">
+                                            <a class="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-sky-300 focus-visible:text-sky-300 group/link text-base"
+                                                href="https://github.com/zaribae/spendwise-expense-tracker-app.git"
+                                                target="_blank">
+                                                <span>DompetHub</span>
+                                                <svg class="inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 ml-1"
+                                                    fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                            </a>
+                                            <!-- Globe Icon for Live Demo -->
+                                            <a href="https://dompethub.app" target="_blank"
+                                                class="text-slate-500 hover:text-sky-300 transition-colors"
+                                                title="Live Demo">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a9.004 9.004 0 018.716-6.747M12 3a9.004 9.004 0 00-8.716 6.747M12 3v18m9-9h-18" />
+                                                </svg>
+                                            </a>
+                                        </h3>
+                                        <p class="mt-2 text-sm leading-normal text-slate-400">
+                                            An intelligent finance tracker app. A modern, serverless web application to
+                                            track expenses using natural language, powered by AI. Provides insightful
+                                            daily and monthly financial overviews.
+                                        </p>
+                                        <div class="mt-2 flex flex-wrap gap-2">
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Python</span>
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Serverless</span>
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Amazon
+                                                Bedrock</span>
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Amazon
+                                                Cognito</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Project 2 -->
+                            <li
+                                class="spotlight-card p-4 lg:p-6 -mx-4 lg:-mx-6 hover:!opacity-100 group-hover/list:opacity-50 transition-opacity">
+                                <div class="spotlight-overlay"></div>
+                                <div class="relative grid gap-4 sm:grid-cols-8 sm:gap-8 md:gap-4 z-10">
+                                    <div class="sm:col-span-2">
+                                        <!-- Replace with your screenshot -->
+                                        <img src="images/ai-customer-chatbot.png"
+                                            alt="AI Customer Support Bot Screenshot"
+                                            class="rounded border-2 border-slate-200/10 transition group-hover:border-slate-200/30 sm:order-1 sm:col-span-2 sm:translate-y-1 w-full h-auto object-cover"
+                                            loading="lazy" />
+                                    </div>
+                                    <div class="sm:col-span-6">
+                                        <h3 class="font-medium leading-snug text-slate-200 flex items-center gap-2">
+                                            <a class="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-sky-300 focus-visible:text-sky-300 group/link text-base"
+                                                href="https://github.com/zaribae/aws-ai-customer-chatbot.git"
+                                                target="_blank">
+                                                <span>AI Customer Support Bot</span>
+                                                <svg class="inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 ml-1"
+                                                    fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                            </a>
+                                        </h3>
+                                        <p class="mt-2 text-sm leading-normal text-slate-400">
+                                            Designed a context-aware chatbot engine. It uses NoSQL databases to store
+                                            session history, allowing the AI to "remember" previous interactions for a
+                                            seamless user experience.
+                                        </p>
+                                        <div class="mt-2 flex flex-wrap gap-2">
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">DynamoDB</span>
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Python</span>
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Backend
+                                                Logic</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Project 3 -->
+                            <li
+                                class="spotlight-card p-4 lg:p-6 -mx-4 lg:-mx-6 hover:!opacity-100 group-hover/list:opacity-50 transition-opacity">
+                                <div class="spotlight-overlay"></div>
+                                <div class="relative grid gap-4 sm:grid-cols-8 sm:gap-8 md:gap-4 z-10">
+                                    <div class="sm:col-span-2">
+                                        <img src="images/foodparadise.png" alt="FoodParadise Screenshot"
+                                            class="rounded border-2 border-slate-200/10 transition group-hover:border-slate-200/30 sm:order-1 sm:col-span-2 sm:translate-y-1 w-full h-auto object-cover"
+                                            loading="lazy" />
+                                    </div>
+                                    <div class="sm:col-span-6">
+                                        <h3 class="font-medium leading-snug text-slate-200 flex items-center gap-2">
+                                            <a class="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-sky-300 focus-visible:text-sky-300 group/link text-base"
+                                                href="https://github.com/zaribae/food-paradise-laravel-project.git"
+                                                target="_blank">
+                                                <span>FoodParadise</span>
+                                                <svg class="inline-block h-4 w-4 shrink-0 transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 ml-1"
+                                                    fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
+                                                        clip-rule="evenodd"></path>
+                                                </svg>
+                                            </a>
+                                            <!-- Example Link to Live Site -->
+                                            <!-- <a href="#" target="_blank"
+                                                class="text-slate-500 hover:text-sky-300 transition-colors"
+                                                title="Live Demo">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                                                </svg>
+                                            </a> -->
+                                        </h3>
+                                        <p class="mt-2 text-sm leading-normal text-slate-400">
+                                            A robust restaurant food ordering website built with Laravel. Features
+                                            include real-time chat, secure PayPal payments, reservations, and more.
+                                        </p>
+                                        <div class="mt-2 flex flex-wrap gap-2">
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Laravel</span>
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">MySQL</span>
+                                            <span
+                                                class="rounded-full bg-sky-400/10 px-3 py-1 text-xs font-medium text-sky-300">Full
+                                                Stack</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                        <!-- Footer Link -->
+                        <div class="mt-12">
+                            <a class="inline-flex items-center font-medium leading-tight text-slate-200 font-semibold text-slate-200 group"
+                                aria-label="View Full Project Archive"
+                                href="https://github.com/zaribae?tab=repositories" target="_blank">
+                                <span
+                                    class="border-b border-transparent pb-px transition group-hover:border-sky-300 motion-reduce:transition-none">View
+                                    Full Project Archive</span>
+                                <span class="whitespace-nowrap">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                        class="ml-1 inline-block h-4 w-4 shrink-0 -translate-y-px transition-transform group-hover:translate-x-2 group-focus-visible:translate-x-2 motion-reduce:transition-none"
+                                        aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="py-10 mt-20 text-sm text-slate-500 text-center lg:text-left">
+                    <p>
+                        Designed in Figma and coded in Visual Studio Code. Built with <span
+                            class="text-slate-200">Tailwind CSS</span> and <span class="text-slate-200">Inter
+                            Font</span>. Deployed with Netlify.
+                    </p>
+                </footer>
+
+            </main>
         </div>
     </div>
 
     <script>
-        const terminal = document.getElementById('terminal');
-        const output = document.getElementById('output');
-        const input = document.getElementById('input');
-        const cursor = document.getElementById('cursor');
-        const promptEl = document.getElementById('prompt');
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.spotlight-card');
 
-        const fileSystem = {
-            'about.md': {
-                content: `
-# Ahmad Azhari
-A passionate Cloud Engineer with a strong foundation in backend development and cloud computing.
-My journey in tech is driven by a desire to build robust, scalable, and efficient systems.
-I thrive on solving complex problems and I'm always eager to learn new technologies.
-            `
-            },
-            'skills.txt': {
-                content: `
-- JavaScript      - Express         - Hapi
-- jQuery          - PHP             - Laravel
-- ReactJS         - Cloud Computing - MySQL
-- PostgreSQL      - MongoDB         - REST API
-- Git             - Java            - OOP
-- Spring          - Python          - Go
-            `
-            },
-            'contact.txt': {
-                content: `
-- **Email**: <a class="link" href="mailto:ahmadazzhari@gmail.com">ahmadazzhari@gmail.com</a>
-- **GitHub**: <a class="link" href="https://github.com/zaribae" target="_blank">github.com/zaribae</a>
-- **LinkedIn**: <a class="link" href="https://www.linkedin.com/in/ahmadazzhari/" target="_blank">linkedin.com/in/ahmadazzhari</a>
-            `
-            }
-        };
+            document.addEventListener('mousemove', (e) => {
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
 
-        const projectsData = [
-            {
-                title: 'SpendWise - AI-Powered Expense Tracker',
-                githubLink: 'https://github.com/zaribae/spendwise-expense-tracker-app.git',
-                description: 'A modern, serverless web application to track expenses using natural language, powered by AI. Provides insightful daily and monthly financial overviews.',
-                tags: ['Lambda', 'API Gateway', 'Amazon Cognito', 'DynamoDB', 'Amazon Bedrock']
-            },
-            {
-                title: 'Serverless Image Recognition & Tagging on AWS',
-                githubLink: 'https://github.com/zaribae/serverless-image-recognition-with-aws.git',
-                description: 'An event-driven, serverless application that automatically analyzes and tags images using AI, allowing users to search for images based on their tags.',
-                tags: ['Lambda', 'API Gateway', 'S3', 'DynamoDB', 'Amazon Rekognition']
-            },
-            {
-                title: 'AI Customer Service ChatBot',
-                githubLink: 'https://github.com/zaribae/aws-ai-customer-chatbot.git',
-                description: 'A serverless, AI-powered customer service chatbot built on AWS that provides intelligent, context-aware responses generated by Amazon Bedrock.',
-                tags: ['Lambda', 'API Gateway', 'Amazon Bedrock', 'DynamoDB']
-            },
-            {
-                title: 'FoodParadise',
-                githubLink: 'https://github.com/zaribae/FoodParadise',
-                description: 'A robust restaurant food ordering website built with Laravel. Features include real-time chat, secure PayPal payments, reservations, and more.',
-                tags: ['Laravel', 'MySQL', 'Real-time Chat']
-            },
-            {
-                title: 'Clothize App',
-                githubLink: 'https://github.com/zaribae/Clothize-App',
-                description: 'A platform for local tailoring and automatic clothes size measurement. I built the RESTful API using Express and deployed it on Google Cloud Run.',
-                tags: ['Express.js', 'Google Cloud', 'REST API']
-            },
-            {
-                title: 'SRIFOTON 2023 Website',
-                githubLink: 'https://github.com/zaribae/SRIFOTON-2023',
-                description: 'Developed the backend RESTful API for a national tech competition website, handling registrations and event information using Laravel.',
-                tags: ['Laravel', 'REST API', 'Team Project']
-            },
-        ];
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
 
-        const commands = {
-            help: () => {
-                return `
-Available commands:
-  <span class="help-command">help</span>         <span class="help-description">Show this help message.</span>
-  <span class="help-command">whoami</span>       <span class="help-description">Display a short bio.</span>
-  <span class="help-command">experience</span>   <span class="help-description">Display work and academic experience.</span>
-  <span class="help-command">projects</span>     <span class="help-description">List all projects.</span>
-  <span class="help-command">ls</span>           <span class="help-description">List available files.</span>
-  <span class="help-command">cat [file]</span>   <span class="help-description">Display content of a file.</span>
-  <span class="help-command">contact</span>      <span class="help-description">Show contact information.</span>
-  <span class="help-command">clear</span>        <span class="help-description">Clear the terminal screen.</span>
-            `;
-            },
-            whoami: () => fileSystem['about.md'].content,
-            experience: () => `
-## Cloud Engineer @ PT. Mastersystem Infotama
-(June 2025 - Present)
-- Design, implement, and manage cloud-based infrastructure and services.
-- Automate deployment and management processes using CI/CD pipelines.
-- Monitor system performance and ensure reliability and security of the cloud environment.
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
 
----
-
-## Web Developer Intern @ Altrusights
-(Feb 2025 - May 2025)
-- Engineered core features for a warehouse management system using Laravel, jQuery, and MySQL.
-- Developed functionalities for stock transfer, purchase orders, delivery orders, and receipt notes.
-- Supported backend development and enhanced frontend interactivity with API integrations.
-
----
-
-## Cloud Computing Learning Path @ Bangkit Academy
-(Aug 2023 - Jan 2024)
-- Led backend development for a capstone project, building a RESTful API with Express and JWT.
-- Deployed applications to Google Cloud Platform, gaining experience with Cloud Run and Cloud SQL.
-- Acquired key soft skills in time management, critical thinking, and project management.
-
----
-
-## Lab Assistant @ Sriwijaya University Advanced Programming Laboratory
-(Oct 2023 - Dec 2023)
-- Managed laboratory operations and supervised class sessions.
-- Conducted a public training session on Network Automation using Python and GNS3.
-`,
-            projects: () => {
-                return projectsData.map(p => `
-## ${p.title}
-- **Description**: ${p.description}
-- **Tech Stack**: ${p.tags.join(', ')}
-- **Link**: <a class="link" href="${p.githubLink}" target="_blank">${p.githubLink}</a>
-`).join('\n---\n');
-            },
-            contact: () => fileSystem['contact.txt'].content,
-            ls: () => {
-                return Object.keys(fileSystem).map(key => `<span class="filename">${key}</span>`).join('  ');
-            },
-            cat: (args) => {
-                const filename = args[0];
-                if (!filename) return 'Usage: cat [file]';
-
-                const file = fileSystem[filename];
-                if (!file) return `cat: '${filename}': No such file or directory`;
-
-                return file.content;
-            },
-            clear: () => {
-                output.innerHTML = '';
-                return '';
-            }
-        };
-
-        function print(html) {
-            output.innerHTML += `<div style="white-space: pre-wrap;">${html}</div>`;
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-
-        function printCommand(command) {
-            const promptText = promptEl.textContent;
-            output.innerHTML += `<div class="input-line"><span class="prompt">${promptText}</span> <span class="command">${command}</span></div>`;
-        }
-
-        function showWelcome() {
-            const welcomeMessage = `
-Welcome to my interactive portfolio.
-Type <span class="command">help</span> to see the list of available commands.
-        `;
-            print(welcomeMessage);
-        }
-
-        input.addEventListener('input', () => {
-            // Dynamically resize the input field based on its content
-            const minSize = 1;
-            const newSize = input.value.length > minSize ? input.value.length : minSize;
-            input.setAttribute('size', newSize);
-        });
-
-        input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-                const commandStr = input.value.trim();
-                if (commandStr) {
-                    printCommand(commandStr);
-                    const [cmd, ...args] = commandStr.split(' ');
-
-                    if (commands[cmd]) {
-                        const result = commands[cmd](args);
-                        if (result) print(result);
-                    } else {
-                        print(`command not found: ${cmd}`);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        const id = entry.target.getAttribute('id');
+                        const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
                     }
-                }
-                input.value = '';
-                // Reset size after enter
-                input.setAttribute('size', 1);
-                terminal.scrollTop = terminal.scrollHeight;
-            }
+                });
+            }, {
+                threshold: 0.3
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
         });
-
-        input.addEventListener('focus', () => cursor.style.display = 'inline-block');
-        input.addEventListener('blur', () => cursor.style.display = 'none');
-
-        // Initialize input size
-        input.setAttribute('size', 1);
-        showWelcome();
     </script>
 </body>
 
